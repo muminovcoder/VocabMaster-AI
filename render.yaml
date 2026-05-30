@@ -1,0 +1,42 @@
+# =============================================
+# VOCABMASTER AI — Render.com Deployment Config
+# https://render.com/docs/deploy-node-express-app
+# =============================================
+services:
+  - type: web
+    name: vocabmaster-ai
+    env: node
+    region: frankfurt
+    plan: free
+    buildCommand: cd server && npm install
+    startCommand: node server/server.js
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: "3001"
+      - key: DATABASE_URL
+        sync: false
+      - key: ACCESS_TOKEN_SECRET
+        generateValue: true
+      - key: REFRESH_TOKEN_SECRET
+        generateValue: true
+      - key: COOKIE_SECRET
+        generateValue: true
+      - key: ENCRYPTION_KEY
+        generateValue: true
+      - key: ACCESS_TOKEN_EXPIRY
+        value: "15m"
+      - key: REFRESH_TOKEN_EXPIRY
+        value: "7d"
+      - key: CORS_ORIGIN
+        value: https://vocabmaster-ai.onrender.com
+      - key: RATE_LIMIT_WINDOW_MS
+        value: "900000"
+      - key: RATE_LIMIT_MAX
+        value: "100"
+      - key: AUTH_RATE_LIMIT_MAX
+        value: "10"
+      - key: LOG_LEVEL
+        value: warn
